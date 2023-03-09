@@ -1,39 +1,28 @@
 
 
-type DeliveryType = IDeliveryToAddress | IDeliveryToStore;
+const data = [
+	{ id: 1, name: 'q' },
+	{ id: 2, name: 'w' },
+	{ id: 3, name: 'e' }
+];
 
-interface IDeliveryToAddress {
-	type: 'addres',
-	address: string
+interface IWithId {
+	id: number
 }
 
-interface IDeliveryToStore {
-	type: 'store',
-	storeId: number
+function sortById<T extends IWithId>(arr: Array<T>, type: boolean = false): Array<T> {
+	if (type) {
+		return arr.sort((a, b) => a.id - b.id);
+	} else {
+		return arr.sort((a, b) => b.id - a.id);
+	}
 }
 
-interface IDelivery {
-	date: Date,
-	deliveryType: DeliveryType
-}
+console.log(sortById(data))
+console.log(sortById(data, true))
 
-interface IProduct {
-	id: number,
-	name: string,
-	price: number
-}
 
-interface ICart {
-	productList: IProduct[],
-	delivery: IDelivery,
-	addProduct(product: IProduct): void,
-	removeProduct(id: number): void,
-	calcAllPrice(): number,
-	createDelivery(deliveryType: DeliveryType): void
-	checkout(): void
-}
 
-class Card implements ICart { }
 
 
 
