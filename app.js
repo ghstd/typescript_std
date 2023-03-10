@@ -1,16 +1,77 @@
 "use strict";
-const data = [
-    { id: 1, name: 'q' },
-    { id: 2, name: 'w' },
-    { id: 3, name: 'e' }
-];
-function sortById(arr, type = false) {
-    if (type) {
-        return arr.sort((a, b) => a.id - b.id);
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GradeSchool = void 0;
+class GradeSchool {
+    constructor() {
+        this.list = {};
     }
-    else {
-        return arr.sort((a, b) => b.id - a.id);
+    roster() {
+        const keys = Object.keys(this.list);
+        if (keys.length) {
+            for (const key of keys) {
+                this.list[key].sort((str_1, str_2) => {
+                    if (str_1 > str_2) {
+                        return 1;
+                    }
+                    else if (str_1 < str_2) {
+                        return -1;
+                    }
+                    else {
+                        return 0;
+                    }
+                });
+            }
+            const result = {};
+            for (const key of keys) {
+                result[key] = [...this.list[key]];
+            }
+            return result;
+        }
+        else {
+            return {};
+        }
+    }
+    add(name, grade) {
+        if (typeof this.list[grade] === 'undefined') {
+            this.list[grade] = [];
+        }
+        const keys = Object.keys(this.list);
+        if (keys.length) {
+            for (const key of keys) {
+                this.list[key] = this.list[key].filter((item) => item !== name);
+            }
+        }
+        if (this.list[grade].find((item) => item === name)) {
+            return true;
+        }
+        else {
+            this.list[grade].push(name);
+        }
+        return true;
+    }
+    grade(grd) {
+        if (this.list[grd]) {
+            this.list[grd].sort((str_1, str_2) => {
+                if (str_1 > str_2) {
+                    return 1;
+                }
+                else if (str_1 < str_2) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            return [...this.list[grd]];
+        }
+        else {
+            return [];
+        }
     }
 }
-console.log(sortById(data));
-console.log(sortById(data, true));
+exports.GradeSchool = GradeSchool;
+const school = new GradeSchool();
+school.add('Aimee', 2);
+const roster = school.roster();
+roster[2].push('Oops.');
+console.log(school.roster());
