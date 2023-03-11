@@ -1,77 +1,47 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GradeSchool = void 0;
-class GradeSchool {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let TsClass = class TsClass {
     constructor() {
-        this.list = {};
+        this.num = 1;
     }
-    roster() {
-        const keys = Object.keys(this.list);
-        if (keys.length) {
-            for (const key of keys) {
-                this.list[key].sort((str_1, str_2) => {
-                    if (str_1 > str_2) {
-                        return 1;
-                    }
-                    else if (str_1 < str_2) {
-                        return -1;
-                    }
-                    else {
-                        return 0;
-                    }
-                });
-            }
-            const result = {};
-            for (const key of keys) {
-                result[key] = [...this.list[key]];
-            }
-            return result;
-        }
-        else {
-            return {};
-        }
+    classLog() {
+        return this.num;
     }
-    add(name, grade) {
-        if (typeof this.list[grade] === 'undefined') {
-            this.list[grade] = [];
-        }
-        const keys = Object.keys(this.list);
-        if (keys.length) {
-            for (const key of keys) {
-                this.list[key] = this.list[key].filter((item) => item !== name);
-            }
-        }
-        if (this.list[grade].find((item) => item === name)) {
-            return true;
-        }
-        else {
-            this.list[grade].push(name);
-        }
-        return true;
+    cL() {
+        console.log(this.num);
     }
-    grade(grd) {
-        if (this.list[grd]) {
-            this.list[grd].sort((str_1, str_2) => {
-                if (str_1 > str_2) {
-                    return 1;
-                }
-                else if (str_1 < str_2) {
-                    return -1;
-                }
-                else {
-                    return 0;
-                }
-            });
-            return [...this.list[grd]];
+};
+TsClass = __decorate([
+    fabric(234),
+    fnDecor,
+    tsDecor
+], TsClass);
+function tsDecor(target) {
+    console.log(target);
+    return class extends target {
+        constructor() {
+            super(...arguments);
+            this.num = 123;
         }
-        else {
-            return [];
-        }
-    }
+    };
 }
-exports.GradeSchool = GradeSchool;
-const school = new GradeSchool();
-school.add('Aimee', 2);
-const roster = school.roster();
-roster[2].push('Oops.');
-console.log(school.roster());
+function fnDecor(target) {
+    console.log(target);
+}
+console.log(new TsClass().classLog());
+function fabric(valuse) {
+    return function (target) {
+        return class extends target {
+            constructor() {
+                super(...arguments);
+                this.num = valuse;
+            }
+        };
+    };
+}
+console.log(new TsClass().classLog());
