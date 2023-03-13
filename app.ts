@@ -2,10 +2,12 @@
 // tupl, enum, union types('|' - объединение, '&' - пересечение)
 // readonly для tupl, array (пример альтернативной записи ReadonlyArray<string>)
 
+// примитивные типы: string, number, bigint, boolean, symbol, nullили undefined
+
 // number
 // string
 // boolean
-// object
+// object (это не Object)
 // array
 // tupl
 // enum
@@ -14,14 +16,20 @@
 // literal type
 // type (alias)
 // interface
+// optional (?)
+// приведение к типу (as 'type', или использовать '!'; as можно применять к объекту (в конце после объекта))
+// void
+// unknown (error в конструкции try/catch имеет тип 'unknown', проверка: error instanceof Error)
+// never
+// null (null - явное отсутствие св-ва, undefined - неявное)
+// type guard ( + type narrowing - сужение типа) 'prop' is 'type' - boolean
 
-// сужение типов (type narrowing):
+// type narrowing (сужение типов):
 // typeof id === 'number'
 // Array.isArray(arr)
-// 'key' in object (или object.hasOwnProperty) (наличие определенного свойста в объекте)
+// 'key' in object (или object.hasOwnProperty) (наличие определенного свойста в объекте) - как способ разделить union объектов
 
-// явная задача нужного типа (кастование):
-//  someProp as 'type here'
+// явная задача нужного типа (кастование): someProp as 'some type'
 
 // 1. параметр функции может принимать более широкий тип, чем описано
 // 2. в объявлении типа tupl можно исаользовать spred-оператор (...), напр.:
@@ -30,82 +38,55 @@
 // после компиляции enum - это самовыз. функция, однако const enum становится одной константой.
 // 4. literal type - переменная, объявленная через 'const', или явно:
 // function myFetch(param: 10 | 20, method: 'post' | 'get') {}
+// 5. optional (?) хоть и означает в объекте 'some type' | undefined,
+// но не эквивалентно явному заданию значения 'some type' | undefined (так наличие св-ва обязательно)
+// 6. при передаче пар-ов ф-ции можно сделать интерфейс для деструктуризации,
+// чтоб не зависеть от порядка пар-ов: function displayMessage({text, sender}: Message) {}.
+// 7. unknown (error в конструкции try/catch имеет тип 'unknown', проверка: error instanceof Error),
+// в union типе: 'unknown' | 'some type' = вернет 'unknown'.
+// 8. never: type nev = never & number вурнет never,
+// (function (): never { throw new Error() })() - покрыть не используемую ветку условия (исчерпывающая проверка)
+// 9. null - спец. опция в tsconfig - strictNullCheks: true (если true, то нельзя обратиться к св-ву, которого нет),
+// null - чего-то нет осознанно, делать проверку на null, возвращать null; undefined - отсутствие в runtime чего-то.
+// 10. для приведения одного объекта к другому использовать
+// кастомные ф-ции mapping-а, записывая лишь нужные св-ва в нужный объект.
+// 11. type guard - синтаксис - function isString(prop: string): prop is string - boolean,
+// но если написать boolean, не произойдет сужение типов для объектов,
+// проверка не может быть асинхронной (Promise),
+// альтернатива для объектов: вместо in -  (user as Admin).role !== undefined.
 
 // ============================================
 
-interface I {
-	'a': number,
-	'b': number,
-	'c': number
+type I1 = {
+	name: string
 }
 
-const o: I = {
-	a: 1,
-	b: 2,
-	c: 3
-};
-
-type Res = 'a'[]
-
-const res: Res = Object.keys(o) as (keyof Pick<I, 'a'>)[]
-
-const v: Pick<I, 'a'> = { a: 2 }
-
-const part: Partial<Omit<I, 'b'>> = {
-	'a': 2,
-	'c': 3
+const aObj = {
+	name: 'str',
+	age: 1
 }
 
-// ============================================
-
-interface Ii {
-	a: string
-	b: number
+const bObj = {
+	key: 'value'
 }
 
-const Ll = {
-	a: 'str',
-	b: 1,
-	c: 2
-}
+const obj: I1 = aObj
 
-function get(param: Ii) { }
+console.log('a'.repeat(3))
 
-get(Ll)
 
-const skls: readonly [string, number, ...boolean[]] = ['a', 1]
 
-Ll.a = 'qwe'
 
-// console.log(Ll)
 
-interface enTest {
-	a: 'aa',
-	b: 'bb',
-	c: 'cc'
-}
 
-const enum testEnum {
-	a = 'aa',
-	b = 'bb',
-	c = 'cc'
-}
 
-const enum nEnum {
-	a,
-	b,
-	c
-}
 
-function enFn(value: enTest) {
-	return value
-}
 
-// console.log(enFn(testEnum))
-// console.log(testEnum)
-// console.log(nEnum)
 
-const vv = nEnum.a;
+
+
+
+
 
 
 
