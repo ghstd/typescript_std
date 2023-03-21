@@ -1,15 +1,9 @@
-"use strict";
 // string, number, boolean, null, undefined, any, void, unknown
 // tupl, enum, union types('|' - объединение, '&' - пересечение)
 // readonly для tupl, array (пример альтернативной записи ReadonlyArray<string>)
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
+
 // примитивные типы: string, number, bigint, boolean, symbol, nullили undefined
+
 // number
 // string
 // boolean
@@ -29,12 +23,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // never
 // null (null - явное отсутствие св-ва, undefined - неявное)
 // type guard ( + type narrowing - сужение типа) 'prop' is 'type' - boolean
+
 // type narrowing (сужение типов):
 // typeof id === 'number'
 // Array.isArray(arr)
 // 'key' in object (или object.hasOwnProperty) (наличие определенного свойста в объекте) - как способ разделить union объектов
+
 // явная задача нужного типа (кастование): someProp as 'some type'
 // declare - означает сказать typescript, что такая переменная уже есть, хоть ему может быть и не видна.
+
 // 1. параметр функции может принимать более широкий тип, чем описано
 // 2. в объявлении типа TUPL можно исаользовать spred-оператор (...), напр.:
 // const skls: [string, number, ...boolean[]] = ['a', 1, true, true];
@@ -58,6 +55,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // но если написать boolean, не произойдет сужение типов для объектов,
 // проверка не может быть асинхронной (Promise),
 // альтернатива для объектов: вместо in -  (user as Admin).role !== undefined.
+
 // CLASS
 // аксессор SET по-умолчанию принимает такой же тип, который возвращает GET.
 // если есть только GET - св-во становиться readonly.
@@ -70,26 +68,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // если структура нескольких классов идентична(сравниваются структурно), то их типы могут быть неразличимы, в том же тайп гарде например (могут заменять друг друга).
 // ABSTRACT(модификатор): class(можно только extends), method(нужно реализовать),
 // abstract class может содержать реальные методы, в которых может уже использовать abstract методы.
+
 // GENERIC
 // <T = 'value'> - можно задать значение по-умолчанию
 // class B<T> extends A<string, number> {} - можно наследоваться только от класса с конкретными типами.
 // может потребоваться явно передать аргументы типа, когда компилятору не удается определить тип в сложных примерах.
 // MIXIN: type Constructor<T = {}> = new (...args: any[]) => T
+
 // ============================================
-require("reflect-metadata");
-class MyClass {
-    constructor(prop) {
-        this.prop = prop;
-    }
-}
-__decorate([
-    decorField,
-    Reflect.metadata('myCustomKey', { a: 1 })
-], MyClass.prototype, "prop", void 0);
-const res = new MyClass(5);
-// console.log(res)
-console.log(Object.getOwnPropertyNames(MyClass.prototype));
-function decorField(target, propertyName) {
-    const res = Reflect.getMetadata('myCustomKey', target, propertyName);
-    console.log(res);
-}
